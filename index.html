@@ -106,8 +106,8 @@ var PLAN={
 mon:[
  {h:"Power",ex:[E("Box Jump / Hurdle Jump","3","3","60–90s","Max intent, full reset each rep"),E("Med Ball Scoop Toss","3","4/side","60s","Explosive hip drive")]},
  {h:"Main lifts",ex:[
-  E("Back Squat",["4","5","5","5"],["5","4","3","2–3"],"3 min","Replaces box squat. Add 2.5–5 kg in the second week of each phase",["RPE 7–8","RPE 8","RPE 8–9","RPE 8–9"],["2","5","RPE 6, light weights to learn the groove"]),
-  E("Back Squat back-off","2",["8","6","5","5"],"2 min","Size volume; same depth and tempo","about 85% of top set","skip"),
+  E("Box Squat",["4","5","5","5"],["5","4","3","2–3"],"3 min","Sit back to the box, brief pause, drive up. Add 2.5–5 kg in the second week of each phase",["RPE 7–8","RPE 8","RPE 8–9","RPE 8–9"],["2","5","RPE 6, light and fast off the box"]),
+  E("Box Squat back-off","2",["8","6","5","5"],"2 min","Size volume; same box height, pause and drive","about 85% of top set","skip"),
   E("Romanian Deadlift","3",["6","6","5","5"],"2–3 min","Heavier than last block; stop at the hamstring stretch",["RPE 7–8","RPE 8","RPE 8","RPE 8–9"])]},
  {h:"Single-leg + hamstrings",ex:[
   E("Rear-Foot Elevated Split Squat","3",["6/side","6/side","5/side","5/side"],"2 min","Heavy DBs; controlled down, strong drive","RPE 8"),
@@ -212,6 +212,9 @@ function todayPos(now){
 var KEY="rugbyBlock.v1";
 function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.sessions)return s;}catch(e){}return{sessions:{}};}
 var DB=load();
+(function migrate(){var ren={"Back Squat":"Box Squat","Back Squat back-off":"Box Squat back-off"},ch=false;
+  Object.keys(DB.sessions).forEach(function(k){var ex=DB.sessions[k].ex;Object.keys(ren).forEach(function(o){if(ex[o]){if(!ex[ren[o]])ex[ren[o]]=ex[o];delete ex[o];ch=true;}});});
+  if(ch)localStorage.setItem(KEY,JSON.stringify(DB));})();
 function save(){localStorage.setItem(KEY,JSON.stringify(DB));}
 function sk(w,di){return w+"-"+DAYS[di].k;}
 function sess(key,create){if(!DB.sessions[key]&&create)DB.sessions[key]={ex:{},finished:null};return DB.sessions[key];}
